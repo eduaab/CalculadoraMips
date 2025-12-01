@@ -1,22 +1,26 @@
-
 # Autor: Eduardo Albuquerque Alves Barbosa
 # Data: 01/12/2025
-# Disciplina: Arquitetura de Computadores / Assembly MIPS
 
 # Rev 1.0 - 01/12/2025 12:13 - Estrutura inicial e Menu Principal
 # Rev 2.0 - 01/12/2025 12:40 - Conversoes: Base 10 para Bin, Hex e BCD
+# Rev 3.0 - 01/12/2025 13:45 - Complemento a 2 (16 bits)
 
 .data
     menu_msg:   .asciiz "\nCALCULADORA DIDATICA MIPS\n1. Base 10 para Bin, Oct, Hex, BCD\n2. Compl. a 2 (16 bits)\n3. Float/Double (IEEE 754)\n0. Sair\nEscolha: "
     bye_msg:    .asciiz "\nEncerrando."
     invalid_msg:.asciiz "\nOpcao invalida!"
     
-    # Strings da Parte 2 (Novas)
+    # Strings da Parte 2 (Conversoes)
     msg_int:    .asciiz "\nDigite um inteiro (Base 10): "
     msg_bin:    .asciiz "\na) Base 2 (Binario): "
     msg_oct:    .asciiz "\nb) Base 8 (Octal - Aprox via Hex): "
     msg_hex:    .asciiz "\nc) Base 16 (Hexadecimal): "
     msg_bcd:    .asciiz "\nd) BCD (Digitos Decimais): "
+
+    # Strings da Parte 3 (Complemento a 2)
+    msg_orig:   .asciiz "\n1. Original (16 bits Hex): "
+    msg_not:    .asciiz "\n2. Apos NOT (Inversao):    "
+    msg_c2:     .asciiz "\n3. Apos Soma 1 (Final):    "
     
 .text
 .globl main
@@ -98,9 +102,56 @@ conv_bases:
 
     j main
 
-# Stubs (Funcoes vazias para as proximas etapas)
+# FUNCAO 2: COMPLEMENTO A 2 (IMPLEMENTADO NA REV 3.0)
 compl_two:
+    # 1. Pedir numero
+    li $v0, 4
+    la $a0, msg_int
+    syscall
+    
+    li $v0, 5
+    syscall
+    move $t0, $v0
+    
+    # Mascara para garantir apenas 16 bits (0xFFFF)
+    andi $t0, $t0, 0xFFFF
+    
+    # Passo 1: Mostrar Original
+    li $v0, 4
+    la $a0, msg_orig
+    syscall
+    
+    li $v0, 34      # Syscall 34 imprime em Hex
+    move $a0, $t0
+    syscall
+    
+    # Passo 2: Inverter Bits (NOT)
+    not $t1, $t0          # $t1 recebe o inverso de $t0
+    andi $t1, $t1, 0xFFFF # Mascara visual novamente (limpa bits superiores)
+    
+    li $v0, 4
+    la $a0, msg_not
+    syscall
+    
+    li $v0, 34
+    move $a0, $t1
+    syscall
+    
+    # Passo 3: Somar 1 (Complemento a 2)
+    add $t1, $t1, 1
+    andi $t1, $t1, 0xFFFF # Mascara final
+    
+    li $v0, 4
+    la $a0, msg_c2
+    syscall
+    
+    li $v0, 34
+    move $a0, $t1
+    syscall
+
     j main
+
+# Stub Final
 float_double:
     j main
 
