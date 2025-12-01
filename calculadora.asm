@@ -3,8 +3,8 @@
 
 # Rev 1.0 - 01/12/2025 12:13 - Estrutura inicial e Menu Principal
 # Rev 2.0 - 01/12/2025 12:40 - Conversoes: Base 10 para Bin, Hex e BCD
-# Rev 3.0 - 01/12/2025 12:55 - Complemento a 2 (16 bits)
-# Rev 4.0 - 01/12/2025 13:10 - Ponto Flutuante (IEEE 754)
+# Rev 3.0 - 01/12/2025 13:45 - Complemento a 2 (16 bits)
+# Rev 4.0 - 01/12/2025 14:10 - Ponto Flutuante (IEEE 754)
 
 .data
     menu_msg:   .asciiz "\nCALCULADORA DIDATICA MIPS\n1. Base 10 para Bin, Oct, Hex, BCD\n2. Compl. a 2 (16 bits)\n3. Float/Double (IEEE 754)\n0. Sair\nEscolha: "
